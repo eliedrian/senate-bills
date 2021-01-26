@@ -1,0 +1,10 @@
+services:
+  postgres:
+    image: "postgres:13"
+    environment:
+      - POSTGRES_PASSWORD=p@ssw0rd
+    volumes:
+      - ./postgres/init:/docker-entrypoint-initdb.d/
+      - ./postgres/data:/var/lib/postgresql/data:delegated
+    ports:
+      - 5432:5432
