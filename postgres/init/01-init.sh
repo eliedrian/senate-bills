@@ -6,22 +6,25 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-E
 	BEGIN;
 	CREATE TABLE IF NOT EXISTS committee (
 		id SERIAL PRIMARY KEY,
-		name TEXT NOT NULL,
-		is_primary BOOL NOT NULL
+		name TEXT NOT NULL
 	);
+	CREATE UNIQUE INDEX ON committee(name);
 	CREATE TABLE IF NOT EXISTS senator (
 		id SERIAL PRIMARY KEY,
 		name TEXT NOT NULL
 	);
+	CREATE UNIQUE INDEX ON senator(name);
 	CREATE TABLE IF NOT EXISTS subject (
 		id SERIAL PRIMARY KEY,
 		name TEXT NOT NULL
 	);
+	CREATE UNIQUE INDEX ON subject(name);
 	CREATE TABLE IF NOT EXISTS attachment (
 		id SERIAL PRIMARY KEY,
 		title TEXT NOT NULL,
 		url TEXT NOT NULL
 	);
+	CREATE UNIQUE INDEX ON attachment(title, url);
 	CREATE TABLE IF NOT EXISTS bill (
 		id SERIAL PRIMARY KEY,
 		congress INT NOT NULL,
@@ -30,6 +33,7 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-E
 		long_title TEXT NOT NULL,
 		short_title TEXT NOT NULL,
 		status TEXT NOT NULL,
+		scope TEXT NOT NULL,
 		url TEXT NOT NULL,
 		vote_type TEXT,
 		president_action TEXT,
@@ -37,6 +41,7 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-E
 		president_signed TIMESTAMPTZ,
 		republic_act TEXT
 	);
+	CREATE UNIQUE INDEX ON bill(congress, number);
 	CREATE TABLE IF NOT EXISTS advises (
 		committee_id INT NOT NULL REFERENCES committee(id),
 		bill_id INT NOT NULL REFERENCES bill(id),
