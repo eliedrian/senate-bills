@@ -145,7 +145,8 @@ with open(sys.argv[1]) as source:
         bill_id = insert_bill(bill)
 
         # insert advises
-        insert_advises(primary_committee_id, bill_id, primary=True)
+        if primary_committee_id:
+            insert_advises(primary_committee_id, bill_id, primary=True)
         for committee_id in secondary_committee_ids:
             insert_advises(committee_id, bill_id)
 
