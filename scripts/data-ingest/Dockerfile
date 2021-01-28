@@ -6,4 +6,4 @@ WORKDIR /app
 
 COPY ingest_dump.py .
 
-CMD bash
+ENTRYPOINT ["/app/ingest_dump.py"]
