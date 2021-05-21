@@ -11,10 +11,18 @@ services:
     networks:
       - hub
   api:
-    build: "api"
+    image: "node:lts-buster"
+    volumes:
+      - ./api/:/app
+    working_dir: "/app"
+    command: ["npx", "nodemon", "src/index.ts"]
     networks:
       - hub
     ports:
       - 3000:3000
+    environment:
+      - PGHOST=postgres
+      - PGUSER=postgres
+      - PGPASSWORD=p@ssw0rd
 networks:
   hub:
